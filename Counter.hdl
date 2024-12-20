@@ -1,17 +1,17 @@
-CHIP Counter {
-    IN inc, reset;
+CHIP PC {
+    IN in[16],load,inc,reset;
     OUT out[16];
 
     PARTS:
-    // Increment the current counter value by 1 using Inc16
-    Inc16(in=out, out=incrementedValue);
+	Inc16(in=oo,out=incd);
 
-    // If inc is high, choose the incremented value; otherwise, keep the current value
-    Mux16(a=out, b=incrementedValue, sel=inc, out=updatedValue);
+	Mux16(a=oo,b=incd,sel=inc,out=o);
 
-    // If reset is high, reset the counter to 0; otherwise, use updatedValue
-    Mux16(a=false, b=updatedValue, sel=reset, out=nextValue);
+	Mux16(a=o,b=in,sel=load,out=uu);
 
-    // Store the next value in the Register to update the counter
-    Register(in=nextValue, out=out, load=true);
+	Mux16(a=uu,b[0..15]=false,sel=reset,out=this);
+	
+	Register(in=this,load=true,out=out,out=oo);
+	
+
 }
